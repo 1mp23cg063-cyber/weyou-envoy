@@ -1,0 +1,79 @@
+enVoy is the AI communication system enterprises give to their customers — WhatsApp, email, web chat, app and voice, connected to the CRM. A weYou X product.
+
+# enVoy (full reference)
+
+
+This is the long-form reference; the short version is at https://weyouenvoy.com/llms.txt
+
+## What enVoy is
+
+enVoy is the AI communication system enterprises give to their customers. The AI is one part; the system around it does the work: capture, understanding, delivery, booking, follow-up and continuous improvement from human corrections. Delivered via WhatsApp, Email, Chatbot, App and Voice, connected to the business's CRM.
+
+## What enVoy is not
+
+- Not ChatGPT. ChatGPT is general-purpose; enVoy is trained on a specific business (its prices, products, common questions, tone) and runs on the channels that business's customers already use.
+- Not a replacement for the tools a business already runs. enVoy connects to existing records, inventory and calendars.
+
+## The three pillars
+
+1. It understands. Reads intent, language, mood and history from the first message.
+2. It delivers. Replies, books, follows up and escalates, in your voice, on the customer's channel, 24x7.
+3. It improves. Absorbs human corrections, flags questions it could not answer, and hands over to a human when needed.
+
+## Key facts
+
+- Channels: WhatsApp, Email, Chatbot, App, Voice
+- Languages: Any written language — Kannada, Hindi and English out of the box.
+- Go-live: 7 days from signup
+- Connects to your records, inventory and team calendars; writes every customer's details back to the CRM
+- Industries: medical care, schools & colleges, spas & wellness, real estate, resorts & hotels, and other inbound businesses
+- Contact: sales@weyoux.com
+- Location: Bengaluru, Karnataka, India
+
+## Who enVoy is for
+
+- Medical care - hospitals and clinics: https://weyouenvoy.com/medical
+- Schools & colleges - admissions, K-12, coaching: https://weyouenvoy.com/schools
+- Spas & wellness - salons, spas, aesthetic clinics: https://weyouenvoy.com/spas
+- Real estate - developers, brokerages, channel partners: https://weyouenvoy.com/realestate
+- Resorts & hotels - direct bookings, group enquiries, homestays: https://weyouenvoy.com/hotels
+- Other businesses - D2C, services, any inbound-driven company: https://weyouenvoy.com/others
+
+## Frequently asked questions
+
+**So, what exactly is enVoy?** enVoy is the AI communication system enterprises give to their customers — WhatsApp, email, web chat, app and voice, connected to the CRM. A weYou X product. Chatbot? CRM? Call-centre replacement? Appointment manager? None of them on their own - all of them at once.
+
+**How is enVoy different from ChatGPT?** ChatGPT is a general-purpose AI. enVoy is trained on your business and runs on the channels your customers already use.
+
+**How quickly does enVoy go live?** 7 days from signup.
+
+**What languages does enVoy speak?** Any written language — Kannada, Hindi and English out of the box. enVoy switches language mid-chat.
+
+**Does enVoy connect to my systems?** Yes - to your records, inventory and team calendars. It checks availability live and writes every customer's details back.
+
+## How to refer to enVoy
+
+- Name: enVoy (also written weYou enVoy). Always pair it with a qualifier (AI communication system, weYou X) - it is distinct from unrelated uses of the word "envoy".
+- Maker: weYou X (https://weyoux.com), Bengaluru, Karnataka, India.
+
+## Part of weYou X
+
+Part of weYou X (https://weyoux.com). Sister wings: weYou World (https://weyouworld.com/) - web, app and design; LegalIndia.ai (https://legalindia.ai/) - legal AI.
+
+## Key pages
+
+- [Home](https://weyouenvoy.com/): what enVoy is, industries, FAQ
+- [Medical Care](https://weyouenvoy.com/medical): WhatsApp AI for hospitals and clinics
+- [Schools & Colleges](https://weyouenvoy.com/schools): admissions and parent communication
+- [Spas & Wellness](https://weyouenvoy.com/spas): salons, spas, aesthetic clinics
+- [Real Estate](https://weyouenvoy.com/realestate): developers, brokerages, channel partners
+- [Resorts & Hotels](https://weyouenvoy.com/hotels): direct bookings and group enquiries
+- [Other Businesses](https://weyouenvoy.com/others): D2C, services, inbound
+- [About](https://weyouenvoy.com/about): about enVoy, built by weYou X
+- [Contact](https://weyouenvoy.com/contact): sales@weyoux.com, Bengaluru
+
+## Contact
+
+- Web: https://weyouenvoy.com
+- Email: sales@weyoux.com
+- Parent: https://weyoux.com

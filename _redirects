@@ -1,0 +1,3 @@
+# No rules. Cloudflare Pages ignores 404 rules, so /_dev/* is noindexed via _headers
+# (and should be kept out of the deployed output). Pages serves foo.html at /foo
+# and redirects /foo.html to /foo on its own.

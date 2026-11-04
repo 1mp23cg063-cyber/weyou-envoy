@@ -1,0 +1,35 @@
+/*
+  X-Content-Type-Options: nosniff
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/medical
+  Cache-Control: public, max-age=0, must-revalidate
+
+/schools
+  Cache-Control: public, max-age=0, must-revalidate
+
+/spas
+  Cache-Control: public, max-age=0, must-revalidate
+
+/realestate
+  Cache-Control: public, max-age=0, must-revalidate
+
+/hotels
+  Cache-Control: public, max-age=0, must-revalidate
+
+/others
+  Cache-Control: public, max-age=0, must-revalidate
+
+/about
+  Cache-Control: public, max-age=0, must-revalidate
+
+/contact
+  Cache-Control: public, max-age=0, must-revalidate
+
+/_dev/*
+  X-Robots-Tag: noindex, nofollow
+
+/admin
+  X-Robots-Tag: noindex, nofollow
