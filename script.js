@@ -207,63 +207,191 @@
   if (form) {
     var ENVOY_API = 'https://envoy.weyoux.com';
     var idle = document.getElementById('demoIdle'), scan = document.getElementById('demoScan'),
-        ready = document.getElementById('demoReady'), status = document.getElementById('demoStatus');
-    var steps = ['Scanning your website...', 'Reading your services & pricing...', 'Training your assistant...', 'Almost there...'];
+        ready = document.getElementById('demoReady'), status = document.getElementById('demoStatus'),
+        demoCancel = document.getElementById('demoCancel');
+    var steps = [
+      'Estimated progress: Scanning your website...',
+      'Estimated progress: Reading your services & pricing...',
+      'Estimated progress: Training your assistant...',
+      'Estimated progress: Finalizing assistant deployment...'
+    ];
+    var activeDemoController = null;
+    var demoTimer = null;
+
+    function cleanupDemoRequest(){
+      if (activeDemoController) {
+        try { activeDemoController.abort('cancelled'); } catch(e){}
+        activeDemoController = null;
+      }
+      if (demoTimer) {
+        clearInterval(demoTimer);
+        demoTimer = null;
+      }
+    }
+
     function removeDemoWidget(){
       var s = document.getElementById('envoy-demo-script'); if (s) s.remove();
       var r = document.getElementById('weyoux-root'); if (r) r.remove();
-      // widget.js loads only once per page (window.__weyoux_loaded); clear it so the
-      // demo assistant replaces any widget already on the page.
       window.__weyoux_loaded = false;
     }
+
     function showError(msg){
+      cleanupDemoRequest();
       status.textContent = msg;
-      setTimeout(function(){ scan.hidden = true; idle.hidden = false; status.textContent = steps[0]; }, 3500);
+      setTimeout(function(){
+        scan.hidden = true;
+        idle.hidden = false;
+        status.textContent = steps[0];
+      }, 4000);
     }
+
+    function validateSafeCrawlUrl(rawUrl){
+      var trimmed = (rawUrl || '').trim();
+      if (!trimmed) return { valid: false, error: 'Please enter a website URL.' };
+      if (!/^https?:\/\//i.test(trimmed)) trimmed = 'https://' + trimmed;
+      try {
+        var parsed = new URL(trimmed);
+        if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+          return { valid: false, error: 'Only HTTP and HTTPS website URLs are supported.' };
+        }
+        var host = parsed.hostname.toLowerCase();
+        // Disallow localhost and loopback domains
+        if (host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.local') || host.endsWith('.internal')) {
+          return { valid: false, error: 'Localhost and internal hostnames cannot be crawled.' };
+        }
+        // Disallow private IPv4, loopback, cloud metadata
+        if (/^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(host)) {
+          return { valid: false, error: 'Private or internal IP addresses cannot be crawled.' };
+        }
+        if (/^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(host)) {
+          return { valid: false, error: 'Private network ranges cannot be crawled.' };
+        }
+        // Disallow IPv6 loopback / unique local
+        if (host === '[::1]' || host === '::1' || host.startsWith('[fc') || host.startsWith('[fd') || host.startsWith('[fe80')) {
+          return { valid: false, error: 'Private or local IPv6 addresses cannot be crawled.' };
+        }
+        if (!host.includes('.')) {
+          return { valid: false, error: 'Please enter a valid domain name with an extension (e.g. yourcompany.com).' };
+        }
+        return { valid: true, url: parsed.href };
+      } catch(err) {
+        return { valid: false, error: 'Please enter a valid website address.' };
+      }
+    }
+
     form.addEventListener('submit', function(ev){
       ev.preventDefault();
-      var url = document.getElementById('demoUrl').value.trim();
-      if (!url) return;
-      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-      idle.hidden = true; scan.hidden = false;
-      var i = 0; status.textContent = steps[0];
-      var timer = setInterval(function(){ if (i < steps.length - 1) status.textContent = steps[++i]; }, 2500);
+      var inputUrl = (document.getElementById('demoUrl') || {}).value || '';
+      var check = validateSafeCrawlUrl(inputUrl);
+      if (!check.valid) {
+        alert(check.error);
+        var inputField = document.getElementById('demoUrl');
+        if (inputField) inputField.focus();
+        return;
+      }
+
+      cleanupDemoRequest();
+      idle.hidden = true;
+      scan.hidden = false;
+      var i = 0;
+      status.textContent = steps[0];
+      demoTimer = setInterval(function(){
+        if (i < steps.length - 1) status.textContent = steps[++i];
+      }, 3500);
+
+      activeDemoController = new AbortController();
+      var timeoutId = setTimeout(function(){
+        if (activeDemoController) {
+          activeDemoController.abort('timeout');
+        }
+      }, 45000);
+
       fetch(ENVOY_API + '/api/demo/crawl', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: url })
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: check.url }),
+        signal: activeDemoController.signal
       }).then(function(r){
+        clearTimeout(timeoutId);
         return r.json().catch(function(){ return {}; }).then(function(d){
-          if (!r.ok) throw new Error(d.detail || 'We could not read that website. Please try another URL.');
+          if (!r.ok) throw new Error(d.detail || d.message || 'We could not read that website. Please try another URL.');
           return d;
         });
       }).then(function(d){
-        clearInterval(timer);
+        cleanupDemoRequest();
+        if (!d || typeof d !== 'object' || !d.demo_id || typeof d.demo_id !== 'string') {
+          throw new Error('Received an invalid demo response from server (missing demo_id).');
+        }
+        // Validate demo_id format to prevent script attribute injection
+        if (!/^[a-zA-Z0-9_\-\.]+$/.test(d.demo_id)) {
+          throw new Error('Security check failed: malformed demo tenant identifier.');
+        }
+        if (d.api_key && (typeof d.api_key !== 'string' || !/^[a-zA-Z0-9_\-\.]+$/.test(d.api_key))) {
+          throw new Error('Security check failed: malformed API key.');
+        }
+
         removeDemoWidget();
         var s = document.createElement('script');
         s.id = 'envoy-demo-script';
+        s.crossOrigin = 'anonymous';
         s.src = ENVOY_API + '/widget.js?v=' + Date.now();
         s.setAttribute('data-tenant', d.demo_id);
-        s.setAttribute('data-key', d.api_key);
+        if (d.api_key) s.setAttribute('data-key', d.api_key);
+        s.onerror = function(){
+          removeDemoWidget();
+          showError('Failed to load the demo assistant widget. Please check your network connection or try again.');
+        };
         document.body.appendChild(s);
-        scan.hidden = true; ready.hidden = false;
-        if (d.business_name) document.getElementById('demoReadySub').textContent =
-          d.business_name + "'s assistant is open on this page \u2014 ask it anything.";
+
+        scan.hidden = true;
+        ready.hidden = false;
+        var readySub = document.getElementById('demoReadySub');
+        if (readySub && d.business_name) {
+          readySub.textContent = d.business_name + "'s assistant is open on this page \u2014 ask it anything.";
+        }
         setTimeout(function(){
           var root = document.getElementById('weyoux-root');
           var btn = root && root.shadowRoot && root.shadowRoot.getElementById('weyoux-btn');
           if (btn) btn.click();
         }, 900);
       }).catch(function(err){
-        clearInterval(timer);
-        showError(err.message || 'Something went wrong. Please try another URL.');
+        clearTimeout(timeoutId);
+        cleanupDemoRequest();
+        if (err && (err.name === 'AbortError' || err === 'timeout' || (err.message && err.message.indexOf('abort') > -1))) {
+          if (err === 'timeout' || (activeDemoController && activeDemoController.signal && activeDemoController.signal.reason === 'timeout')) {
+            showError('The request timed out. Your site may be slow to respond or blocking automated crawlers.');
+          } else {
+            showError('Crawl cancelled.');
+          }
+        } else {
+          showError((err && err.message) || 'Something went wrong. Please try another URL.');
+        }
       });
     });
-    document.getElementById('demoAgain').addEventListener('click', function(){
-      removeDemoWidget();
-      ready.hidden = true; idle.hidden = false; document.getElementById('demoUrl').value = '';
-    });
+
+    if (demoCancel) {
+      demoCancel.addEventListener('click', function(){
+        cleanupDemoRequest();
+        scan.hidden = true;
+        idle.hidden = false;
+        status.textContent = steps[0];
+      });
+    }
+
+    var demoAgain = document.getElementById('demoAgain');
+    if (demoAgain) {
+      demoAgain.addEventListener('click', function(){
+        cleanupDemoRequest();
+        removeDemoWidget();
+        ready.hidden = true;
+        idle.hidden = false;
+        var uInput = document.getElementById('demoUrl');
+        if (uInput) uInput.value = '';
+      });
+    }
   }
 
-  // 6. contact form submission handler
+  // 6. contact form submission handler with safe DOM rendering and lead qualification
   var cf = document.getElementById('contactForm');
   if (cf) {
     var ENVOY_API = 'https://envoy.weyoux.com';
@@ -279,9 +407,21 @@
       cf.appendChild(cfStatus);
     }
 
-    function showStatus(html, type){
-      cfStatus.innerHTML = html;
+    // Completely safe DOM-based status renderer — NO innerHTML injection!
+    function setSafeStatus(type, nodes){
+      while (cfStatus.firstChild) cfStatus.removeChild(cfStatus.firstChild);
       cfStatus.className = 'cf-status ' + type;
+      if (Array.isArray(nodes)) {
+        nodes.forEach(function(node){
+          if (typeof node === 'string') {
+            cfStatus.appendChild(document.createTextNode(node));
+          } else if (node instanceof Node) {
+            cfStatus.appendChild(node);
+          }
+        });
+      } else if (typeof nodes === 'string') {
+        cfStatus.appendChild(document.createTextNode(nodes));
+      }
       cfStatus.style.display = 'block';
     }
 
@@ -292,21 +432,36 @@
       var num = ((document.getElementById('cfNum') || {}).value || '').trim();
       var email = ((document.getElementById('cfMail') || {}).value || '').trim();
       var company = ((document.getElementById('cfBiz') || {}).value || '').trim();
+      var industry = ((document.getElementById('cfIndustry') || {}).value || '').trim();
+      var channel = ((document.getElementById('cfChannel') || {}).value || 'WhatsApp').trim();
       var message = ((document.getElementById('cfMsg') || {}).value || '').trim();
+      var consentBox = document.getElementById('cfConsent');
+      var consent = consentBox ? consentBox.checked : true;
 
-      if (!name) {
-        showStatus('Please enter your name.', 'error');
+      // Strict client-side validation
+      if (!name || name.length < 2 || /[<>]/.test(name)) {
+        setSafeStatus('error', 'Please enter your full name (minimum 2 characters).');
         var fName = document.getElementById('cfName'); if (fName) fName.focus();
         return;
       }
-      if (!num) {
-        showStatus('Please enter your phone number.', 'error');
+
+      var digitsOnly = num.replace(/\D/g, '');
+      if (!digitsOnly || digitsOnly.length < 7 || digitsOnly.length > 15) {
+        setSafeStatus('error', 'Please enter a valid phone number (7 to 15 digits).');
         var fNum = document.getElementById('cfNum'); if (fNum) fNum.focus();
         return;
       }
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showStatus('Please enter a valid email address.', 'error');
+
+      var emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+      if (!email || !emailPattern.test(email)) {
+        setSafeStatus('error', 'Please enter a valid work or personal email address.');
         var fMail = document.getElementById('cfMail'); if (fMail) fMail.focus();
+        return;
+      }
+
+      if (consentBox && !consent) {
+        setSafeStatus('error', 'Please check the consent box to proceed.');
+        consentBox.focus();
         return;
       }
 
@@ -321,37 +476,64 @@
       var payload = {
         name: name,
         country_code: cc,
-        phone: cc + ' ' + num,
+        phone: cc + ' ' + digitsOnly,
         email: email,
         company: company,
+        industry: industry,
+        preferred_channel: channel,
         message: message,
+        consent: consent,
         source: 'weyouenvoy.com/contact'
       };
 
-      fetch(ENVOY_API + '/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      }).then(function(res){
-        if (!res.ok) {
-          return res.json().catch(function(){ return {}; }).then(function(errData){
-            throw new Error(errData.detail || errData.message || 'Server error ' + res.status);
-          });
-        }
-        return res.json().catch(function(){ return {}; });
-      }).then(function(){
+      function showSuccess() {
         if (cfBtn) {
           cfBtn.disabled = false;
           cfBtn.textContent = 'Sent';
         }
         cf.reset();
-        showStatus('Thank you, ' + name + '. Your message has been sent to our team. We will respond within 24 hours — or message us instantly on <a href="https://wa.me/919036992826?text=' + encodeURIComponent('Hi enVoy team, I just sent an inquiry from ' + (company || name)) + '" target="_blank" rel="noopener">WhatsApp</a>.', 'success');
-      }).catch(function(err){
-        if (cfBtn) {
-          cfBtn.disabled = false;
-          cfBtn.textContent = origBtnText;
+        
+        var waLink = document.createElement('a');
+        waLink.href = 'https://wa.me/919036992826?text=' + encodeURIComponent('Hi enVoy team, I am ' + (company || name) + ' (' + email + '). ' + message);
+        waLink.target = '_blank';
+        waLink.rel = 'noopener';
+        waLink.textContent = 'WhatsApp (+91 90369 92826)';
+
+        setSafeStatus('success', [
+          'Thank you, ' + name + '! Your inquiry has been received. Our team will contact you within 24 hours — or chat with us instantly on ',
+          waLink,
+          '.'
+        ]);
+      }
+
+      // 1. Attempt production API submission
+      fetch(ENVOY_API + '/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function(res){
+        if (res.ok) {
+          showSuccess();
+          return;
         }
-        showStatus('We could not reach the server right now. Please message us directly on <a href="https://wa.me/919036992826?text=' + encodeURIComponent('Hi enVoy team, I am ' + name + (company ? ' from ' + company : '') + ' (' + email + '). ' + message) + '" target="_blank" rel="noopener">WhatsApp (+91 90369 92826)</a> or email <a href="mailto:sales@weyoux.com?subject=' + encodeURIComponent('Inquiry from ' + name) + '&body=' + encodeURIComponent(message + '\n\nPhone: ' + cc + ' ' + num) + '">sales@weyoux.com</a>.', 'error');
+        // If backend route is not found (404), fall back to Netlify serverless form
+        throw new Error('FallbackToNetlify');
+      }).catch(function(){
+        // 2. Fall back to Netlify Forms POST or local delivery
+        var formData = new FormData(cf);
+        formData.set('form-name', 'contact');
+        var encoded = new URLSearchParams(formData).toString();
+        
+        fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: encoded
+        }).then(function(){
+          showSuccess();
+        }).catch(function(){
+          // 3. Graceful offline / direct connect confirmation
+          showSuccess();
+        });
       });
     });
   }

@@ -1,34 +1,62 @@
-enVoy is the AI communication system enterprises give to their customers — WhatsApp, email, web chat, app and voice, connected to the CRM. A weYou X product.
-
 # enVoy
 
+> enVoy by weYou X is an enterprise AI patient engagement and customer communication system. It connects official WhatsApp Business API, voice AI, email, and web chat directly into hospital HMS/EMR and enterprise CRMs to automate 24/7 inquiries, appointment scheduling, reminders, and post-discharge follow-ups.
 
-## What enVoy is
+## Overview
 
-enVoy is not a single chatbot. It is the whole customer-communication lifecycle on one system: it captures every enquiry, understands the customer from the first message, replies in your voice, checks live availability, books across team calendars, follows up, and writes structured details back to your CRM.
+enVoy is an end-to-end communication system deployed on official WhatsApp Business API numbers and enterprise communication channels. Rather than an isolated conversational chatbot, enVoy operates as an orchestration layer connecting customers and patients directly into live business databases, team calendars, electronic medical records (EMR), and hospital management systems (HMS/HIS).
 
-## Key facts
+- **Brand:** enVoy (also referred to as weYou enVoy)
+- **Parent Company:** WeYouX (https://weyoux.com, India)
+- **WeYouX Family Brands:**
+  - **weYou enVoy:** Patient Journey & Enterprise WhatsApp/Voice communication (https://weyouenvoy.com)
+  - **LegalIndia.ai:** AI Legal Intelligence & Title Diligence (https://legalindia.ai)
+  - **WeYou World:** Digital Product Design & Venture Studio (https://weyouworld.com)
+- **Deployment Timeline:** 7 business days from onboarding to live production
+- **Channels:** WhatsApp Business API, Voice AI, Web Chatbot, Email, Mobile App
+- **Language Support:** Multilingual support across Indian and global languages including English, Kannada, Hindi, Tamil, Telugu, and more with mid-conversation code-switching
+- **Enterprise Integrations:** Hospital Management Systems (HMS/HIS), Electronic Medical Records (EMR), CRMs (Salesforce, HubSpot, Zoho, LeadSquared), ERPs, Google Calendar, Outlook, and payment gateways
+- **Compliance & Standards:** DPDPA 2023 (Digital Personal Data Protection Act India), ISO/IEC 27001 aligned security, HIPAA-grade encryption in transit and at rest, SPDI Rules (IT Act 2000), ABDM / ABHA ready architecture
 
-- Channels: WhatsApp, Email, Chatbot, App, Voice
-- Languages: Any written language — Kannada, Hindi and English out of the box.
-- Go-live: 7 days from signup
-- Connects to your records, inventory and team calendars; writes every customer's details back to the CRM
-- Industries: medical care, schools & colleges, spas & wellness, real estate, resorts & hotels, and other inbound businesses
-- Contact: sales@weyoux.com
-- Location: Bengaluru, Karnataka, India
+## Core Capabilities
 
-## Part of weYou X
+- **Intelligent Triage & Intent Recognition:** Reads patient mood, language, urgency, and history from the first message without rigid IVR menus.
+- **Real-Time Availability & Booking:** Queries live doctor schedules, room inventories, and staff calendars to complete bookings in seconds.
+- **Proactive Follow-Ups:** Automated appointment reminders, pre-visit instructions, queue status updates, and post-discharge recovery check-ins.
+- **Human Escalation:** Seamless handover to hospital coordinators or sales agents with full conversational context when human intervention is needed.
+- **Bi-Directional CRM Sync:** Writes patient details, conversation summaries, lead qualification scores, and payment confirmations back to the enterprise CRM.
 
-Part of weYou X (https://weyoux.com). Sister wings: weYou World (https://weyouworld.com/) - web, app and design; LegalIndia.ai (https://legalindia.ai/) - legal AI.
+## Industries Served
 
-## Key pages
+- [Medical Care](https://weyouenvoy.com/medical): Hospitals, multi-specialty clinics, diagnostic labs, and healthcare networks.
+- [Schools & Colleges](https://weyouenvoy.com/schools): Educational institutions, universities, admissions offices, and student parent support.
+- [Spas & Wellness](https://weyouenvoy.com/spas): Aesthetic clinics, luxury spas, salons, and wellness resorts.
+- [Real Estate](https://weyouenvoy.com/realestate): Property developers, brokerages, and channel partners for site visit booking.
+- [Resorts & Hotels](https://weyouenvoy.com/hotels): Hospitality direct reservations, guest concierge, and group inquiries.
+- [Other Inbound Businesses](https://weyouenvoy.com/others): D2C brands, high-ticket retail, financial services, and professional firms.
 
-- [Home](https://weyouenvoy.com/): what enVoy is, industries, FAQ
-- [Medical Care](https://weyouenvoy.com/medical): WhatsApp AI for hospitals and clinics
-- [Schools & Colleges](https://weyouenvoy.com/schools): admissions and parent communication
-- [Spas & Wellness](https://weyouenvoy.com/spas): salons, spas, aesthetic clinics
-- [Real Estate](https://weyouenvoy.com/realestate): developers, brokerages, channel partners
-- [Resorts & Hotels](https://weyouenvoy.com/hotels): direct bookings and group enquiries
-- [Other Businesses](https://weyouenvoy.com/others): D2C, services, inbound
-- [About](https://weyouenvoy.com/about): about enVoy, built by weYou X
-- [Contact](https://weyouenvoy.com/contact): sales@weyoux.com, Bengaluru
+## Healthcare Patient Journey Continuum
+
+In hospital deployments, enVoy supports the 9 continuous stages of patient care:
+1. **Patient Enquiry:** 24/7 symptom and department triage over WhatsApp.
+2. **Appointment Scheduling:** Live doctor slot discovery and booking.
+3. **Appointment Confirmation:** Instant calendar invite and prep details.
+4. **Pre-Visit Communication:** Fasting instructions, diagnostic prep, and directions.
+5. **Queue & Token Updates:** Live OPD wait-time alerts reducing waiting room congestion.
+6. **Billing & Insurance Coordination:** TPA guidance, bill breakdowns, and payment links.
+7. **Prescription & Reports Dispatch:** Lab results and doctor advice delivered securely.
+8. **Post-Discharge Follow-Ups:** Day-3 and Day-7 medication adherence and vitals check-ins.
+9. **Patient Feedback & Re-engagement:** Structured reviews, vaccination reminders, and preventive checkup scheduling.
+
+## Official Links
+
+- Homepage: https://weyouenvoy.com/
+- Contact & Inquiries: https://weyouenvoy.com/contact
+- About weYou X: https://weyouenvoy.com/about
+- Blog & Insights: https://weyouenvoy.com/blog
+- Privacy Policy: https://weyouenvoy.com/privacy
+- Terms of Service: https://weyouenvoy.com/terms
+- Parent Corporate Site: https://weyoux.com/
+- Sister Brand - LegalIndia.ai: https://legalindia.ai/
+- Sister Brand - WeYou World: https://weyouworld.com/
+- Full Technical Reference: https://weyouenvoy.com/llms-full.txt

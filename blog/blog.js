@@ -1,11 +1,29 @@
 // enVoy blog — static: blog/posts.json is the index, blog/<slug>.md is the body
 (function(){
   var V = function(s){ return String(s).replace(/enVoy/g, 'en<span class="V">V</span>oy'); };
-  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function esc(s){
+    return String(s || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+  function sanitizeUrl(url){
+    var u = String(url || '').trim();
+    if (/^(https?:\/\/|\/|\.\/|#|mailto:|tel:)/i.test(u) && !/javascript:|data:/i.test(u)) {
+      return esc(u);
+    }
+    return '#';
+  }
   function inline(s){
     s = esc(s);
-    s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, '<img src="$2" alt="$1" loading="lazy">');
-    s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2">$1</a>');
+    s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, function(_, alt, src){
+      return '<img src="' + sanitizeUrl(src) + '" alt="' + alt + '" loading="lazy">';
+    });
+    s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function(_, text, href){
+      return '<a href="' + sanitizeUrl(href) + '">' + text + '</a>';
+    });
     s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
     s = s.replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>').replace(/(^|\W)_([^_]+)_(?=\W|$)/g, '$1<em>$2</em>');
     s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
@@ -17,7 +35,7 @@
       var l = lines[i];
       if (!l.trim()) { i++; continue; }
       var m;
-      if ((m = l.match(/^(#{1,3})\s+(.*)/))) { var h = m[1].length + 1; out.push('<h' + h + '>' + inline(m[2]) + '</h' + h + '>'); i++; continue; }
+      if ((m = l.match(/^(#{1,4})\s+(.*)/))) { var h = m[1].length <= 2 ? 2 : m[1].length; out.push('<h' + h + '>' + inline(m[2]) + '</h' + h + '>'); i++; continue; }
       if (/^>\s?/.test(l)) { var q = []; while (i < lines.length && /^>\s?/.test(lines[i])) q.push(lines[i].replace(/^>\s?/, '')), i++; out.push('<blockquote><p>' + inline(q.join(' ')) + '</p></blockquote>'); continue; }
       if (/^[-*]\s+/.test(l)) { var u = []; while (i < lines.length && /^[-*]\s+/.test(lines[i])) u.push('<li>' + inline(lines[i].replace(/^[-*]\s+/, '')) + '</li>'), i++; out.push('<ul>' + u.join('') + '</ul>'); continue; }
       if (/^\d+\.\s+/.test(l)) { var o = []; while (i < lines.length && /^\d+\.\s+/.test(lines[i])) o.push('<li>' + inline(lines[i].replace(/^\d+\.\s+/, '')) + '</li>'), i++; out.push('<ol>' + o.join('') + '</ol>'); continue; }
@@ -51,9 +69,36 @@
       var p = (d.posts || []).filter(function(x){ return x.slug === slug; })[0];
       if (!p) throw new Error('missing');
       document.title = p.title + ' — enVoy Blog';
+      var can = document.querySelector('link[rel="canonical"]');
+      if (can) can.setAttribute('href', 'https://weyouenvoy.com/post?p=' + encodeURIComponent(slug));
+      var ogTitle = document.querySelector('meta[property="og:title"]'); if (ogTitle) ogTitle.setAttribute('content', p.title);
+      var ogDesc = document.querySelector('meta[property="og:description"]'); if (ogDesc && p.summary) ogDesc.setAttribute('content', p.summary);
+      var twTitle = document.querySelector('meta[name="twitter:title"]'); if (twTitle) twTitle.setAttribute('content', p.title);
+      var twDesc = document.querySelector('meta[name="twitter:description"]'); if (twDesc && p.summary) twDesc.setAttribute('content', p.summary);
       document.getElementById('postTitle').innerHTML = V(esc(p.title));
       document.getElementById('postMeta').innerHTML = fmt(p.date) + (p.tags && p.tags.length ? ' &middot; ' + esc(p.tags.join(', ')) : '');
       var mdesc = document.querySelector('meta[name="description"]'); if (mdesc && p.summary) mdesc.setAttribute('content', p.summary);
+
+      // Inject BlogPosting JSON-LD schema dynamically
+      try {
+        var postSchema = {
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": p.title,
+          "description": p.summary || p.title,
+          "datePublished": p.date,
+          "dateModified": p.date,
+          "mainEntityOfPage": "https://weyouenvoy.com/post?p=" + encodeURIComponent(slug),
+          "author": { "@type": "Organization", "name": "weYou X", "url": "https://weyoux.com/" },
+          "publisher": { "@type": "Organization", "name": "weYou X", "url": "https://weyoux.com/" }
+        };
+        if (p.cover) postSchema.image = p.cover;
+        var sScript = document.createElement('script');
+        sScript.type = 'application/ld+json';
+        sScript.text = JSON.stringify(postSchema);
+        document.head.appendChild(sScript);
+      } catch(e){}
+
       return fetch('/blog/' + slug + '.md', { cache: 'no-cache' }).then(function(r){ if (!r.ok) throw new Error('missing'); return r.text(); }).then(function(t){
         body.innerHTML = (p.cover ? '<img class="post-cover" src="' + esc(p.cover) + '" alt="">' : '') + md(t);
       });

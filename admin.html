@@ -1,9 +1,9 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Write a post â€” enVoy</title>
+  <title>Write a post &mdash; enVoy</title>
   <meta name="description" content="Internal: write and export a blog post.">
   <meta name="author" content="weYou X">
   <meta name="robots" content="noindex, nofollow">
@@ -11,12 +11,12 @@
   <meta name="theme-color" content="#040c16">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://weyouenvoy.com/admin">
-  <meta property="og:title" content="Write a post â€” enVoy">
+  <meta property="og:title" content="Write a post &mdash; enVoy">
   <meta property="og:description" content="Internal: write and export a blog post.">
   <meta property="og:image" content="https://weyouenvoy.com/og-image.png">
   <meta property="og:site_name" content="enVoy">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Write a post â€” enVoy">
+  <meta name="twitter:title" content="Write a post &mdash; enVoy">
   <meta name="twitter:description" content="Internal: write and export a blog post.">
   <meta name="twitter:image" content="https://weyouenvoy.com/og-image.png">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -81,6 +81,7 @@
   </section>
   <section class="sub-section">
     <div class="container admin-grid">
+      <h2 class="visually-hidden">Post Composer and Live Preview</h2>
       <form class="contact-form admin-form" id="postForm" onsubmit="return false">
         <label class="visually-hidden" for="pTitle">Title</label>
         <input id="pTitle" placeholder="Title" required>
@@ -117,11 +118,13 @@ Paragraphs, **bold**, _italic_, [links](https://...), - bullets, > quotes, ![alt
   </section>
   </main>
 
-  <footer>
+    <footer>
     <div class="container">
       <div class="foot-grid">
-        <div>
+        <div class="foot-brand">
           <div class="foot-logo">en<span class="V">V</span>oy<sup>&trade;</sup></div>
+          <p class="foot-tag">The omnichannel patient journey and customer communication layer on WhatsApp, voice, and web.</p>
+          <div class="foot-copy">&copy; 2026 WeYouX . All rights reserved.</div>
         </div>
         <div class="foot-col">
           <h3>Industries</h3>
@@ -134,22 +137,36 @@ Paragraphs, **bold**, _italic_, [links](https://...), - bullets, > quotes, ![alt
         </div>
         <div class="foot-col">
           <h3>en<span class="V">V</span>oy</h3>
-          <a href="/#industries">Industries</a>
+          <a href="/#demo">Live Demo</a>
+          <a href="/#journey">Patient Journey</a>
           <a href="/about">About</a>
+          <a href="/blog">Blog</a>
           <a href="/contact">Contact</a>
         </div>
         <div class="foot-col">
-          <h3>weYou X</h3>
-          <a href="https://weyoux.com/">weYou X</a>
-          <a href="https://weyouworld.com/">weYou World</a>
-          <a href="https://legalindia.ai/">LegalIndia.ai</a>
+          <h3>Contact</h3>
           <a href="mailto:sales@weyoux.com">sales@weyoux.com</a>
-          <a href="https://wa.me/919036992826?text=Hi" target="_blank" rel="noopener">WA +91 90369 92826</a>
+          <a href="https://wa.me/919036992826?text=Hi" target="_blank" rel="noopener">WhatsApp +91 90369 92826</a>
         </div>
       </div>
+
+      <div class="foot-corporate">
+        <span class="foot-family-label">Part of the <a href="https://weyoux.com/" target="_blank" rel="noopener">WeYouX</a> family:</span>
+        <div class="foot-family-links">
+          <a href="https://weyoux.com/" class="family-link" target="_blank" rel="noopener">WeYouX</a>
+          <span class="family-sep">&middot;</span>
+          <span class="family-current">weYou enVoy</span>
+          <span class="family-sep">&middot;</span>
+          <a href="https://legalindia.ai/" class="family-link" target="_blank" rel="noopener">LegalIndia.ai</a>
+          <span class="family-sep">&middot;</span>
+          <a href="https://weyouworld.com/" class="family-link" target="_blank" rel="noopener">WeYou World</a>
+        </div>
+      </div>
+
       <div class="foot-bottom">
-        <div>&copy; 2026 weYou X. All rights reserved.</div>
-        <div>Bengaluru &middot; Karnataka &middot; India</div>
+        <div class="foot-legal-links">
+          <a href="/privacy">Privacy Policy</a> &middot; <a href="/terms">Terms of Service</a> &middot; <span>India</span>
+        </div>
       </div>
     </div>
   </footer>

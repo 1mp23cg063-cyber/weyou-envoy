@@ -31,6 +31,8 @@ User-agent: MistralAI-User
 User-agent: cohere-ai
 Allow: /
 Disallow: /_dev/
+Disallow: /admin
+Disallow: /admin.html
 Disallow: /*?utm_*
 Disallow: /*?fbclid=
 Disallow: /*?gclid=

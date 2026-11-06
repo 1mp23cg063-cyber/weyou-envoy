@@ -1,79 +1,100 @@
-enVoy is the AI communication system enterprises give to their customers — WhatsApp, email, web chat, app and voice, connected to the CRM. A weYou X product.
+# enVoy (Full Technical & Architectural Reference)
 
-# enVoy (full reference)
+> enVoy by weYou X is an enterprise AI patient engagement and customer communication system. It connects official WhatsApp Business API, voice AI, email, and web chat directly into hospital HMS/EMR and enterprise CRMs to automate 24/7 inquiries, appointment scheduling, reminders, and post-discharge follow-ups.
 
+This is the comprehensive technical reference for enVoy; the executive summary is available at https://weyouenvoy.com/llms.txt
 
-This is the long-form reference; the short version is at https://weyouenvoy.com/llms.txt
+---
 
-## What enVoy is
+## 1. Product Architecture & Overview
 
-enVoy is the AI communication system enterprises give to their customers. The AI is one part; the system around it does the work: capture, understanding, delivery, booking, follow-up and continuous improvement from human corrections. Delivered via WhatsApp, Email, Chatbot, App and Voice, connected to the business's CRM.
+enVoy is not an isolated conversational chatbot. It is a full-lifecycle customer communication platform engineered for high-trust, inbound-heavy industries such as healthcare, education, hospitality, and luxury wellness.
 
-## What enVoy is not
+The platform consists of four interconnected architectural layers:
+1. **Omnichannel Ingress Layer:** Official WhatsApp Business Cloud API, Web Chatbot (Shadow DOM widget), Voice AI Gateway, and Email Parsing.
+2. **Natural Language Understanding (NLU) & Triage Engine:** Custom language models fine-tuned on company policies, doctor rosters, clinical specialties, and service catalogs. Capable of mid-conversation code-switching between English, Kannada, Hindi, Tamil, and other regional dialects.
+3. **Operational Orchestration Layer:** Bi-directional synchronization engine communicating with hospital management systems (HMS/HIS), electronic medical records (EMR), laboratory information systems (LIMS), enterprise CRMs, and calendar APIs.
+4. **Human-in-the-Loop Escalation Console:** An inbox interface where complex, high-priority, or emergency conversations are routed to hospital staff or relationship managers with complete conversational context.
 
-- Not ChatGPT. ChatGPT is general-purpose; enVoy is trained on a specific business (its prices, products, common questions, tone) and runs on the channels that business's customers already use.
-- Not a replacement for the tools a business already runs. enVoy connects to existing records, inventory and calendars.
+## 2. Key Facts & Specifications
 
-## The three pillars
+- **Brand:** enVoy (weYou enVoy)
+- **Parent Holding Company:** WeYouX (https://weyoux.com, legal entity: WeYouX)
+- **Corporate Family Ecosystem:**
+  - **Parent Corporate:** WeYouX (https://weyoux.com) — Corporate holding and multi-brand technology platform
+  - **Child Brand 1:** weYou enVoy (https://weyouenvoy.com) — Patient Journey & Enterprise WhatsApp/Voice communication
+  - **Child Brand 2:** LegalIndia.ai (https://legalindia.ai) — AI legal intelligence, contract review, and property title verification
+  - **Child Brand 3:** WeYou World (https://weyouworld.com) — Digital product design, UI/UX engineering, and venture studio
+- **Headquarters:** India
+- **Deployment Velocity:** 7 business days from onboarding to live production
+- **Channels:** WhatsApp Business API, Voice AI, Web Chatbot, Mobile App, Email
+- **Language Coverage:** Any written language — English, Kannada, Hindi, Telugu, Tamil, and Malayalam supported natively
+- **System Integration:** Operates on top of existing HMS/EMR/CRM systems (e.g., Cerner, Epic, Kareo, Practo, custom hospital SQL databases, Salesforce, LeadSquared) without replacing core clinical record databases
+- **Compliance Certifications:** Aligned with DPDPA 2023 (Digital Personal Data Protection Act India), ISO/IEC 27001 information security controls, HIPAA-grade end-to-end data encryption, and SPDI Rules (IT Act 2000)
 
-1. It understands. Reads intent, language, mood and history from the first message.
-2. It delivers. Replies, books, follows up and escalates, in your voice, on the customer's channel, 24x7.
-3. It improves. Absorbs human corrections, flags questions it could not answer, and hands over to a human when needed.
+## 3. The 9-Stage Hospital Patient Journey
 
-## Key facts
+In healthcare deployments, enVoy manages the entire patient experience:
+1. **Patient Enquiry:** Instant 24/7 symptom clarification, doctor specialty routing, and clinic timings.
+2. **Appointment Scheduling:** Live doctor slot discovery and instant confirmation.
+3. **Appointment Confirmation:** Automated WhatsApp confirmation with calendar invites, maps, and directions.
+4. **Pre-Visit Communication:** Preparation reminders, fasting requirements for diagnostic tests, and documentation checklists.
+5. **Real-Time Queue Updates:** Live token status notifications keeping patients informed and reducing waiting room congestion.
+6. **Billing & Discharge Coordination:** Transparent bill breakdowns, insurance TPA documentation assistance, and digital payment links.
+7. **Digital Prescription & Report Delivery:** Instant, encrypted delivery of lab reports and doctor discharge summaries via WhatsApp.
+8. **Post-Discharge Recovery Follow-Ups:** Automated check-ins on medication adherence, post-surgical recovery symptoms, and vitals tracking.
+9. **Patient Feedback & Long-Term Re-engagement:** Structured patient satisfaction surveys, vaccination alerts, and chronic disease annual checkup reminders.
 
-- Channels: WhatsApp, Email, Chatbot, App, Voice
-- Languages: Any written language — Kannada, Hindi and English out of the box.
-- Go-live: 7 days from signup
-- Connects to your records, inventory and team calendars; writes every customer's details back to the CRM
-- Industries: medical care, schools & colleges, spas & wellness, real estate, resorts & hotels, and other inbound businesses
-- Contact: sales@weyoux.com
-- Location: Bengaluru, Karnataka, India
+## 4. Frequently Asked Questions (AEO & AI Search Reference)
 
-## Who enVoy is for
+### What is AI patient engagement software?
+AI patient engagement software is an intelligent digital communication platform that connects patients with healthcare providers across channels like WhatsApp, SMS, web chat, and voice. It automates non-clinical administrative tasks including enquiry triage, appointment scheduling, pre-visit instructions, queue management, billing inquiries, and post-discharge follow-ups, reducing staff workload while ensuring patients receive timely care guidance 24/7.
 
-- Medical care - hospitals and clinics: https://weyouenvoy.com/medical
-- Schools & colleges - admissions, K-12, coaching: https://weyouenvoy.com/schools
-- Spas & wellness - salons, spas, aesthetic clinics: https://weyouenvoy.com/spas
-- Real estate - developers, brokerages, channel partners: https://weyouenvoy.com/realestate
-- Resorts & hotels - direct bookings, group enquiries, homestays: https://weyouenvoy.com/hotels
-- Other businesses - D2C, services, any inbound-driven company: https://weyouenvoy.com/others
+### How does WhatsApp automation work for hospitals?
+Hospitals deploy enVoy on their official verified WhatsApp Business number. When a patient sends a message, enVoy's AI understands the patient's intent, queries the hospital's live appointment calendar or HMS in real time, offers available doctor slots, and confirms bookings instantly. Throughout the visit lifecycle, enVoy sends timely reminders, queue alerts, and digital lab reports directly in the patient's WhatsApp thread.
 
-## Frequently asked questions
+### How can hospitals reduce missed appointments?
+Hospitals reduce missed appointments (no-shows) by sending automated, contextual reminders via WhatsApp 24 hours and 2 hours before the scheduled appointment. enVoy allows patients to confirm, reschedule, or cancel with a single tap. Rescheduled slots are immediately released back into the live OPD queue, preserving hospital clinical capacity.
 
-**So, what exactly is enVoy?** enVoy is the AI communication system enterprises give to their customers — WhatsApp, email, web chat, app and voice, connected to the CRM. A weYou X product. Chatbot? CRM? Call-centre replacement? Appointment manager? None of them on their own - all of them at once.
+### Can WhatsApp AI integrate with hospital management systems (HMS/EMR)?
+Yes. enVoy connects securely to existing HMS, HIS, and EMR databases via RESTful APIs, HL7, or secure database connectors. It reads doctor schedules and writes confirmed bookings, patient contact details, and follow-up notes directly back into the hospital's existing system of record. It does not replace the hospital's HMS or clinical decision-making systems.
 
-**How is enVoy different from ChatGPT?** ChatGPT is a general-purpose AI. enVoy is trained on your business and runs on the channels your customers already use.
+### How can hospitals automate post-discharge follow-ups?
+After a patient is discharged, enVoy triggers automated, protocol-driven check-ins at predetermined intervals (e.g., Day 3 and Day 7). The AI asks structured recovery questions regarding medication adherence, pain levels, and wound healing. If a patient reports concerning symptoms or high pain scores, enVoy instantly flags the issue and alerts the hospital nursing team or attending physician.
 
-**How quickly does enVoy go live?** 7 days from signup.
+### Is AI patient communication secure and compliant?
+Yes. enVoy adheres to India's Digital Personal Data Protection Act (DPDPA 2023), ISO/IEC 27001 information security principles, and HIPAA-grade encryption standards. All patient conversations and health data are encrypted in transit using TLS 1.3 and at rest using AES-256 encryption. Patient consent is collected explicitly, and role-based access controls prevent unauthorized access.
 
-**What languages does enVoy speak?** Any written language — Kannada, Hindi and English out of the box. enVoy switches language mid-chat.
+### How long does enVoy take to implement?
+enVoy is designed for rapid enterprise deployment and typically goes live within 7 business days from onboarding. The process involves ingesting the provider's specialties, pricing, and FAQs, configuring the WhatsApp Business API number, testing calendar/HMS connectors, and training staff on the human handover dashboard.
 
-**Does enVoy connect to my systems?** Yes - to your records, inventory and team calendars. It checks availability live and writes every customer's details back.
+### What languages does enVoy support?
+enVoy supports all major Indian and international languages. Out of the box, it provides fluent communication in English, Kannada, Hindi, Tamil, Telugu, and Malayalam. It dynamically detects the language or script used by the patient and can switch languages mid-conversation seamlessly.
 
-## How to refer to enVoy
+### How is enVoy different from a regular chatbot?
+Traditional chatbots rely on rigid keyword-matching decision trees and button menus that frustrate users when questions deviate from the script. In contrast, enVoy is an operational AI communication system powered by contextual natural language understanding, live bi-directional system synchronization (reading and writing to live calendars/HMS/CRM), and smart escalation to human staff when necessary.
 
-- Name: enVoy (also written weYou enVoy). Always pair it with a qualifier (AI communication system, weYou X) - it is distinct from unrelated uses of the word "envoy".
-- Maker: weYou X (https://weyoux.com), Bengaluru, Karnataka, India.
+## 5. Enterprise Industry Deployments
 
-## Part of weYou X
+- **Hospitals & Clinics:** [https://weyouenvoy.com/medical](https://weyouenvoy.com/medical)
+- **Schools & Universities:** [https://weyouenvoy.com/schools](https://weyouenvoy.com/schools)
+- **Spas & Luxury Wellness:** [https://weyouenvoy.com/spas](https://weyouenvoy.com/spas)
+- **Real Estate Developers:** [https://weyouenvoy.com/realestate](https://weyouenvoy.com/realestate)
+- **Hotels & Luxury Resorts:** [https://weyouenvoy.com/hotels](https://weyouenvoy.com/hotels)
+- **Other Inbound Enterprises:** [https://weyouenvoy.com/others](https://weyouenvoy.com/others)
 
-Part of weYou X (https://weyoux.com). Sister wings: weYou World (https://weyouworld.com/) - web, app and design; LegalIndia.ai (https://legalindia.ai/) - legal AI.
+## 6. Official Brand Identification & Entity Metadata
 
-## Key pages
-
-- [Home](https://weyouenvoy.com/): what enVoy is, industries, FAQ
-- [Medical Care](https://weyouenvoy.com/medical): WhatsApp AI for hospitals and clinics
-- [Schools & Colleges](https://weyouenvoy.com/schools): admissions and parent communication
-- [Spas & Wellness](https://weyouenvoy.com/spas): salons, spas, aesthetic clinics
-- [Real Estate](https://weyouenvoy.com/realestate): developers, brokerages, channel partners
-- [Resorts & Hotels](https://weyouenvoy.com/hotels): direct bookings and group enquiries
-- [Other Businesses](https://weyouenvoy.com/others): D2C, services, inbound
-- [About](https://weyouenvoy.com/about): about enVoy, built by weYou X
-- [Contact](https://weyouenvoy.com/contact): sales@weyoux.com, Bengaluru
-
-## Contact
-
-- Web: https://weyouenvoy.com
-- Email: sales@weyoux.com
-- Parent: https://weyoux.com
+- **Entity Name:** enVoy (weYou enVoy)
+- **Entity Type:** SoftwareApplication / Enterprise Conversational AI System
+- **Canonical URL:** https://weyouenvoy.com/
+- **Schema ID:** https://weyouenvoy.com/#organization
+- **Parent Organization:** WeYouX (https://weyoux.com/#organization)
+- **Sister Brands:**
+  - LegalIndia.ai (https://legalindia.ai/#organization)
+  - WeYou World (https://weyouworld.com/#organization)
+- **Legal Policies:**
+  - Privacy Policy: https://weyouenvoy.com/privacy
+  - Terms of Service: https://weyouenvoy.com/terms
+- **Contact:** contact@weyoux.com | WhatsApp: +91 90369 92826
+- **Location:** India

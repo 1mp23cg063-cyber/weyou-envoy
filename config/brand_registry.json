@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "version": "1.0.0",
+  "ecosystem": {
+    "parent": {
+      "id": "weyoux",
+      "legalName": "WeYouX",
+      "brandName": "WeYouX",
+      "canonicalDomain": "https://weyoux.com",
+      "schemaOrgId": "https://weyoux.com/#organization",
+      "role": "Parent Corporate Brand & AI Technology Holding Group",
+      "headquarters": "India",
+      "contactEmail": "corporate@weyoux.com",
+      "childBrandIds": ["envoy", "legalindia", "weyou-world"],
+      "socialProfiles": {
+        "linkedin": "https://www.linkedin.com/company/weyoux",
+        "twitter": "https://twitter.com/weyoux"
+      }
+    },
+    "brands": {
+      "envoy": {
+        "id": "envoy",
+        "brandName": "weYou enVoy",
+        "shortName": "enVoy",
+        "tagline": "The Patient Journey & Omnichannel Communication Layer",
+        "canonicalDomain": "https://weyouenvoy.com",
+        "schemaOrgId": "https://weyouenvoy.com/#organization",
+        "parentOrganizationId": "https://weyoux.com/#organization",
+        "primaryFocus": "Healthcare Patient Journey, WhatsApp Automation, OPD Scheduling, Post-Discharge Engagement",
+        "targetIndustries": ["Medical Care", "Schools & Colleges", "Resorts & Hotels", "Real Estate", "Spas & Wellness"],
+        "primaryColor": "#d4af37",
+        "secondaryColor": "#0a1931",
+        "apiEndpoint": "https://envoy.weyoux.com",
+        "authDomain": "auth.weyouenvoy.com",
+        "crmPipelineId": "pipeline_envoy_healthcare_inbound",
+        "ga4MeasurementId": "G-ENVOY00001",
+        "contactEmail": "sales@weyoux.com",
+        "supportPhone": "+919036992826",
+        "storageBucket": "weyou-envoy-assets-prod",
+        "legalEntity": "WeYouX (enVoy Division)"
+      },
+      "legalindia": {
+        "id": "legalindia",
+        "brandName": "LegalIndia.ai",
+        "shortName": "LegalIndia",
+        "tagline": "AI Legal Intelligence & Title Verification Platform",
+        "canonicalDomain": "https://legalindia.ai",
+        "schemaOrgId": "https://legalindia.ai/#organization",
+        "parentOrganizationId": "https://weyoux.com/#organization",
+        "primaryFocus": "Legal Research, Property Due Diligence, Contract Analysis, Regulatory Compliance",
+        "targetIndustries": ["Law Firms", "In-House Legal Teams", "Real Estate Developers", "Banks & NBFCs"],
+        "primaryColor": "#1b365d",
+        "secondaryColor": "#b8860b",
+        "apiEndpoint": "https://api.legalindia.ai",
+        "authDomain": "auth.legalindia.ai",
+        "crmPipelineId": "pipeline_legalindia_enterprise",
+        "ga4MeasurementId": "G-LEGAL00002",
+        "contactEmail": "contact@legalindia.ai",
+        "supportPhone": "+919036992826",
+        "storageBucket": "weyou-legalindia-vault-prod",
+        "legalEntity": "WeYouX (LegalTech Division)"
+      },
+      "weyou-world": {
+        "id": "weyou-world",
+        "brandName": "WeYou World",
+        "shortName": "WeYou World",
+        "tagline": "Digital Product Design & AI Venture Studio",
+        "canonicalDomain": "https://weyouworld.com",
+        "schemaOrgId": "https://weyouworld.com/#organization",
+        "parentOrganizationId": "https://weyoux.com/#organization",
+        "primaryFocus": "High-Fidelity Web Systems, Mobile Applications, Growth Engineering, Digital Venture Building",
+        "targetIndustries": ["Enterprise Brands", "High-Growth Startups", "Consumer Tech", "Hospitality Brands"],
+        "primaryColor": "#2ea7c9",
+        "secondaryColor": "#0d1b2a",
+        "apiEndpoint": "https://api.weyouworld.com",
+        "authDomain": "auth.weyouworld.com",
+        "crmPipelineId": "pipeline_weyouworld_ventures",
+        "ga4MeasurementId": "G-WORLD00003",
+        "contactEmail": "studio@weyouworld.com",
+        "supportPhone": "+919036992826",
+        "storageBucket": "weyou-world-media-prod",
+        "legalEntity": "WeYouX (Design & Venture Division)"
+      }
+    }
+  }
+}

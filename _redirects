@@ -1,3 +1,10 @@
-# No rules. Cloudflare Pages ignores 404 rules, so /_dev/* is noindexed via _headers
-# (and should be kept out of the deployed output). Pages serves foo.html at /foo
-# and redirects /foo.html to /foo on its own.
+# Cloudflare Pages / Netlify clean URL rules
+# Rewrite clean URLs to avoid folder/file collisions
+/blog       /blog.html       200
+/blog/      /blog.html       200
+/admin      /admin.html      200
+/admin/     /admin.html      200
+/privacy    /privacy.html    200
+/terms      /terms.html      200
+
+
